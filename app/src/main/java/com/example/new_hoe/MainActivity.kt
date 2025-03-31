@@ -15,7 +15,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.new_hoe.Screens.AddPage
+import com.example.new_hoe.Screens.HomePage
 import com.example.new_hoe.Screens.LoginPage
+import com.example.new_hoe.Screens.ProfilePage
+import com.example.new_hoe.Screens.RegistrationPage
+import com.example.new_hoe.Screens.SearchPage
 import com.example.new_hoe.Screens.SplashScreen
 import com.example.new_hoe.ui.theme.New_HOETheme
 
@@ -43,5 +48,10 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
     ) {
         composable("splash") { SplashScreen(navController) }
         composable("login") { LoginPage() }
+        composable("register") { RegistrationPage() }
+        composable("home") { HomePage() }
+        composable("search") { SearchPage() }
+        composable("profile") { ProfilePage() }
+        composable("add"){ AddPage()}
     }
 }
