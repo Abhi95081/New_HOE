@@ -58,7 +58,7 @@ fun LoginPage(navController: NavController) {
             enter = fadeIn() + fadeIn(tween(500)),
             exit = fadeOut(tween(500))
         ) {
-            Text("Login Page", style = MaterialTheme.typography.bodyLarge)
+            Text("Login Page", style = MaterialTheme.typography.headlineLarge, color = Color.Blue)
         }
 
         Spacer(modifier = Modifier.height(32.dp))
