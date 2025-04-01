@@ -2,7 +2,9 @@ package com.example.new_hoe.Screens
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
@@ -10,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -18,8 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.new_hoe.R
-
 
 @Composable
 fun LoginPage(navController: NavController) {
@@ -47,10 +48,16 @@ fun LoginPage(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
+            .background(Color.White),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         // Animation for the login screen elements
-        AnimatedVisibility(visible = enterAnimation) {
+        AnimatedVisibility(
+            visible = enterAnimation,
+            enter = fadeIn() + fadeIn(tween(500)),
+            exit = fadeOut(tween(500))
+        ) {
             Text("Login Page", style = MaterialTheme.typography.bodyLarge)
         }
 
@@ -68,15 +75,15 @@ fun LoginPage(navController: NavController) {
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp)
-                        .background(Color.Gray),
+                        .padding(16.dp)
+                        .background(Color.Gray.copy(alpha = 0.2f), shape = MaterialTheme.shapes.small)
+                        .padding(16.dp),
                     keyboardOptions = KeyboardOptions.Default.copy(
                         imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(onNext = { /* focus to password */ }),
+                    )
                 )
                 if (!isEmailValid) {
-                    Text("Invalid email", color = Color.Red)
+                    Text("Invalid email", color = Color.Red, style = MaterialTheme.typography.bodySmall)
                 }
             }
         }
@@ -95,43 +102,29 @@ fun LoginPage(navController: NavController) {
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp)
-                        .background(Color.Gray),
+                        .padding(16.dp)
+                        .background(Color.Gray.copy(alpha = 0.2f), shape = MaterialTheme.shapes.small)
+                        .padding(16.dp),
                     keyboardOptions = KeyboardOptions.Default.copy(
                         imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(onDone = { /* handle login */ }),
+                    )
                 )
                 if (!isPasswordValid) {
-                    Text("Password must be at least 6 characters", color = Color.Red)
+                    Text("Password must be at least 6 characters", color = Color.Red, style = MaterialTheme.typography.bodySmall)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Google login button
-        AnimatedVisibility(visible = enterAnimation) {
-            Button(
-                onClick = {
-                    // Handle Google login
-                    Toast.makeText(context, "Google Login", Toast.LENGTH_SHORT).show()
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Login with Google")
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
         // Button to navigate to the registration page
         AnimatedVisibility(visible = enterAnimation) {
             TextButton(
                 onClick = {
-                    navController.navigate("registration")
+                    navController.navigate("register")
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.medium
             ) {
                 Text("Don't have an account? Register")
             }
@@ -139,13 +132,19 @@ fun LoginPage(navController: NavController) {
 
         // Handle login validation
         Spacer(modifier = Modifier.height(16.dp))
-        if (validateEmail && validatePassword) {
+        AnimatedVisibility(visible = enterAnimation) {
             Button(
                 onClick = {
                     // Handle regular login
                     Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
+                    // Navigate to the Bottom Navigation Bar
+                    navController.navigate("bottom_nav") {
+                        // Optional: Clear the back stack
+                        popUpTo("login") { inclusive = true }
+                    }
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.medium
             ) {
                 Text("Login")
             }
@@ -153,9 +152,3 @@ fun LoginPage(navController: NavController) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewLoginPage() {
-    // Pass a mock NavController
-    LoginPage(navController = rememberNavController())
-}

@@ -8,4 +8,5 @@ sealed class Routes(val route: String) {
     object SearchPage : Routes("search")
     object AddPage : Routes("add")
     object ProfilePage : Routes("profile")
+    object BottomNav : Routes("bottom_nav")
 }

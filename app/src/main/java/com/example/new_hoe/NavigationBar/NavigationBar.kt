@@ -1,66 +1,105 @@
 package com.example.new_hoe.NavigationBar
 
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.*
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.new_hoe.NavigationBar.BottomNavItem
+import com.example.new_hoe.Routes.Routes
+import com.example.new_hoe.Screens.AddPage
+import com.example.new_hoe.Screens.HomePage
+import com.example.new_hoe.Screens.ProfilePage
+import com.example.new_hoe.Screens.SearchPage
 
 @Composable
-fun BottomNavigationBar(navController: NavController) {
-    val items = listOf(
-        BottomNavItem("Home", Icons.Filled.Home, "home"),
-        BottomNavItem("Search", Icons.Filled.Search, "search"),
-        BottomNavItem("Add", Icons.Filled.Add, "add"),
-        BottomNavItem("Profile", Icons.Filled.Person, "profile")
+fun BottomNav(navController: NavHostController) {
+
+    val navController1 = rememberNavController()
+
+    Scaffold(bottomBar = { MyBottomBar(navController = navController1) }) { innerPadding ->
+
+        NavHost(navController = navController1, startDestination = Routes.HomePage.route,
+            modifier = Modifier.padding(innerPadding)
+        ){
+            composable(Routes.HomePage.route){
+                HomePage()
+            }
+            composable(Routes.SearchPage.route) {
+                SearchPage()
+            }
+
+            composable(Routes.AddPage.route) {
+                AddPage()
+            }
+            composable(Routes.ProfilePage.route) {
+                ProfilePage()
+            }
+        }
+
+    }
+
+}
+
+@Composable
+fun MyBottomBar(navController: NavHostController){
+
+    val backStackEntry = navController.currentBackStackEntry
+    val currentRoute = backStackEntry?.destination?.route
+
+    val list = listOf(
+
+        BottomNavItem(
+            "home",
+            Routes.HomePage.route,
+            Icons.Rounded.Home
+        ),
+        BottomNavItem(
+            "Search",
+            Routes.SearchPage.route,
+            Icons.Rounded.Search
+        ),
+        BottomNavItem(
+            "Add Threads",
+            Routes.AddPage.route,
+            Icons.Rounded.Add
+        ),
+        BottomNavItem(
+            "Profile",
+            Routes.ProfilePage.route,
+            Icons.Rounded.Person
+        )
     )
 
-    NavigationBar {
-        val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-        items.forEach { item ->
-            NavigationBarItem(
-                icon = { Icon(item.icon, contentDescription = item.label) },
-                label = { Text(item.label) },
-                selected = currentRoute == item.route,
-                onClick = { navController.navigate(item.route) }
-            )
+    BottomAppBar {
+        list.forEach{
+            val selected  = it.route == backStackEntry?.destination?.route
+
+            NavigationBarItem(selected = selected,
+                onClick = {
+                    navController.navigate(it.route){
+                        popUpTo(navController.graph.findStartDestination().id){
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+                icon = {
+                    Icon(imageVector = it.icon, contentDescription = it.title)
+                })
         }
     }
 }
-
-@Composable
-fun MainScreen() {
-    val navController = rememberNavController()
-    Scaffold(
-        bottomBar = { BottomNavigationBar(navController) }
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = "home",
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable("home") { Text("Home Screen") }
-            composable("search") { Text("Search Screen") }
-            composable("add") { Text("Add Screen") }
-            composable("profile") { Text("Profile Screen") }
-        }
-    }
-}
-
-
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewMainScreen() {
-//    MainScreen()
-//}

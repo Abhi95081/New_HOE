@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.new_hoe.NavigationBar.Navgraph
 import com.example.new_hoe.Screens.AddPage
 import com.example.new_hoe.Screens.HomePage
 import com.example.new_hoe.Screens.LoginPage
@@ -30,28 +31,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             New_HOETheme {
-                val navController = rememberNavController()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    AppNavHost(navController, Modifier.padding(innerPadding))
+                    val navController = rememberNavController()
+                    Navgraph(navController = navController)
                 }
             }
         }
     }
 }
 
-@Composable
-fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
-    NavHost(
-        navController = navController,
-        startDestination = "splash",
-        modifier = modifier
-    ) {
-        composable("splash") { SplashScreen(navController) }
-        composable("login") { LoginPage() }
-        composable("register") { RegistrationPage() }
-        composable("home") { HomePage() }
-        composable("search") { SearchPage() }
-        composable("profile") { ProfilePage() }
-        composable("add"){ AddPage()}
-    }
-}
