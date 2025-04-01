@@ -30,7 +30,7 @@ fun SplashScreen(navController: NavController) {
     Box(
         modifier = Modifier.fillMaxSize()
             .background(Brush.verticalGradient(colors = listOf(Color.Blue, Color.Cyan))),
-        contentAlignment = Alignment.Center
+          contentAlignment = Alignment.Center
     ) {
         Text(text = "Welcome to Hostel Online Exchange"
             , modifier = Modifier.padding(16.dp),
