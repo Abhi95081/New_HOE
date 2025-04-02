@@ -84,4 +84,22 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
+    implementation("io.github.raamcosta.compose-destinations:core:1.8.36-beta") // Navigation
+   // implementation("io.supabase:supabase-kt:1.2.0") // Supabase SDK
+    implementation("com.google.accompanist:accompanist-permissions:0.31.0-alpha") // Permissions
+    implementation("androidx.activity:activity-compose:1.8.0") // Image Picker Support
+   // implementation("com.google.mlkit:vision:16.0.0") // AI Vision API (optional)
+
+
+    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.compose.ui:ui:1.4.3")
+    implementation("androidx.compose.material3:material3:1.1.1")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("io.ktor:ktor-client-core:2.0.0")
+    implementation("io.ktor:ktor-client-cio:2.0.0")
+    implementation("io.ktor:ktor-client-content-negotiation:2.0.0")
+    implementation("io.ktor:ktor-client-serialization:2.0.0")
+    implementation("io.ktor:ktor-client-json:2.0.0")
+    implementation("org.json:json:20210307")
+
 }
