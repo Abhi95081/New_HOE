@@ -44,7 +44,7 @@ fun Navgraph(navController: NavHostController) {
             LoginPage(navController)
         }
         composable(Routes.RegistrationPage.route) {
-            RegistrationPage()
+            RegistrationPage(navController)
         }
 
     }
