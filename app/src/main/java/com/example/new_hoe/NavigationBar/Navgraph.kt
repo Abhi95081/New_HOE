@@ -1,6 +1,7 @@
 package com.example.new_hoe.NavigationBar
 
 
+import RegistrationPage
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -12,7 +13,6 @@ import com.example.new_hoe.Screens.AddPage
 import com.example.new_hoe.Screens.HomePage
 import com.example.new_hoe.Screens.LoginPage
 import com.example.new_hoe.Screens.ProfilePage
-import com.example.new_hoe.Screens.RegistrationPage
 import com.example.new_hoe.Screens.SearchPage
 import com.example.new_hoe.Screens.SplashScreen
 
