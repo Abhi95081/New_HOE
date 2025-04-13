@@ -100,4 +100,7 @@ dependencies {
     implementation("io.ktor:ktor-client-serialization:2.3.4")
     implementation("io.ktor:ktor-client-json:2.3.4")
 
+    implementation("io.github.jan-tennyson:supabase-kt-postgrest:0.16.0")
+    implementation ("io.github.jan.supabase:postgrest-kt:0.9.3") // Use the latest version
+
 }
