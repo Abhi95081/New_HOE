@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    kotlin("plugin.serialization") version "1.9.0" // Add this line
 }
 
 android {
@@ -61,6 +62,8 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.datastore.core.android)
+    implementation(libs.androidx.work.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -74,32 +77,27 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
 
-    // Your additional dependencies
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation("androidx.compose.ui:ui:1.6.1")
-    implementation("androidx.compose.material3:material3:1.2.1")
-    implementation("io.github.jan-tennert.supabase:postgrest-kt:1.3.2")
-    implementation("io.ktor:ktor-client-core:2.3.6")
-    implementation("io.ktor:ktor-client-okhttp:2.3.6")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
-    implementation("io.github.raamcosta.compose-destinations:core:1.8.36-beta") // Navigation
-   // implementation("io.supabase:supabase-kt:1.2.0") // Supabase SDK
-    implementation("com.google.accompanist:accompanist-permissions:0.31.0-alpha") // Permissions
-    implementation("androidx.activity:activity-compose:1.8.0") // Image Picker Support
-   // implementation("com.google.mlkit:vision:16.0.0") // AI Vision API (optional)
+    implementation("io.github.jan-tennert.supabase:gotrue-kt:1.4.0") // Gotrue SDK
+    implementation("io.github.jan-tennert.supabase:storage-kt:1.4.0")  // Storage SDK
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:1.4.0") // Postgrest SDK
+    implementation("androidx.activity:activity-compose:1.8.1") // For image picking
+
+    implementation("io.coil-kt:coil-compose:2.4.0") // For image loading
+
+    implementation("io.ktor:ktor-client-okhttp:2.3.4")
 
 
-    implementation("androidx.activity:activity-compose:1.7.2")
-    implementation("androidx.compose.ui:ui:1.4.3")
-    implementation("androidx.compose.material3:material3:1.1.1")
-    implementation("io.coil-kt:coil-compose:2.4.0")
-    implementation("io.ktor:ktor-client-core:2.0.0")
-    implementation("io.ktor:ktor-client-cio:2.0.0")
-    implementation("io.ktor:ktor-client-content-negotiation:2.0.0")
-    implementation("io.ktor:ktor-client-serialization:2.0.0")
-    implementation("io.ktor:ktor-client-json:2.0.0")
-    implementation("org.json:json:20210307")
+    // Add this line for Kotlin serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+
+    //implementation ("io.github.jan.supabase:supabase-kotlin:0.0.1") // Make sure to use the correct version
+    implementation("io.github.jan.supabase:supabase-kotlin:0.0.1")
+
+
+    implementation("io.ktor:ktor-client-core:2.3.4")
+    implementation("io.ktor:ktor-client-cio:2.3.4")
+    implementation("io.ktor:ktor-client-serialization:2.3.4")
+    implementation("io.ktor:ktor-client-json:2.3.4")
 
 }

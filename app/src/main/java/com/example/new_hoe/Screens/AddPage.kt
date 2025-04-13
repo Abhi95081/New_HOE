@@ -1,135 +1,115 @@
 package com.example.new_hoe.Screens
 
-import android.content.Context
-import android.graphics.Bitmap
 import android.net.Uri
-import android.provider.MediaStore
-import android.util.Base64
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.input.TextFieldValue
 import coil.compose.rememberAsyncImagePainter
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import kotlinx.coroutines.Dispatchers
+import com.example.new_hoe.Supabase.uploadToSupabase
 import kotlinx.coroutines.launch
-import org.json.JSONObject
-import java.io.ByteArrayOutputStream
 
 @Composable
 fun AddPage() {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
     var imageUri by remember { mutableStateOf<Uri?>(null) }
-    var description by remember { mutableStateOf("") }
-    var price by remember { mutableStateOf("") }
-    var userPrice by remember { mutableStateOf(TextFieldValue("")) }
-    val coroutineScope = rememberCoroutineScope()
+    var description by remember { mutableStateOf("") } // Changed from discription
+    var cost by remember { mutableStateOf("") }
+    var status by remember { mutableStateOf("") }
+    var isUploading by remember { mutableStateOf(false) }
 
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        imageUri = uri
-    }
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri -> imageUri = uri }
 
-    Column(modifier = Modifier.padding(16.dp)) {
-        Button(onClick = { launcher.launch("image/*") }) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(onClick = { imagePicker.launch("image/*") }) {
             Text("Pick Image")
         }
 
-        imageUri?.let { uri ->
+        imageUri?.let {
             Image(
-                painter = rememberAsyncImagePainter(uri),
+                painter = rememberAsyncImagePainter(it),
                 contentDescription = "Selected Image",
-                modifier = Modifier.size(200.dp).padding(8.dp)
+                modifier = Modifier.size(150.dp)
             )
         }
 
-        if (description.isNotEmpty()) {
-            Text(text = "Description: $description", modifier = Modifier.padding(8.dp))
-        }
+        OutlinedTextField(
+            value = description,
+            onValueChange = { description = it },
+            label = { Text("Description") },
+            modifier = Modifier.fillMaxWidth()
+        )
 
-        if (price.isNotEmpty()) {
-            Text(text = "AI Price: ₹$price", modifier = Modifier.padding(8.dp))
-        }
-
-        TextField(
-            value = userPrice,
-            onValueChange = { userPrice = it },
-            label = { Text("Enter Your Price") },
+        OutlinedTextField(
+            value = cost,
+            onValueChange = {
+                if (it.matches(Regex("^\\d*\\.?\\d{0,2}$")) || it.isEmpty()) {
+                    cost = it
+                }
+            },
+            label = { Text("Cost") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             modifier = Modifier.fillMaxWidth()
         )
 
         Button(
             onClick = {
-                imageUri?.let { uri ->
-                    coroutineScope.launch(Dispatchers.IO) {
-                        val (desc, estimatedPrice) = analyzeImage(uri, context)
-                        description = desc
-                        price = estimatedPrice
+                if (imageUri != null && description.isNotBlank() && cost.isNotBlank()) {
+                    isUploading = true
+                    scope.launch {
+                        val result = uploadToSupabase(context, description, cost,imageUri!!)
+                        isUploading = false
+                        status = if (result.isSuccess) {
+                            imageUri = null
+                            description = ""
+                            cost = ""
+                            "Upload successful!"
+                        } else {
+                            val error = result.exceptionOrNull()?.message
+                            when {
+                                error?.contains("Could not open URI stream") == true -> "Failed to read image"
+                                error?.contains("Failed to read image") == true -> "Invalid image file"
+                                error?.contains("File is empty") == true -> "Selected image is empty"
+                                error?.contains("Image too large") == true -> "Image too large (max 5MB)"
+                                error?.contains("Storage upload failed") == true -> "Failed to upload image to server"
+                                error?.contains("Database insert failed") == true -> "Failed to save data: ${error.substringAfter(": ")}"
+                                error?.contains("Upload failed") == true -> "Upload failed: ${error.substringAfter(": ")}"
+                                else -> "Error: ${error ?: "Unknown error"}"
+                            }
+                        }
                     }
+                } else {
+                    status = "Please fill all fields"
                 }
             },
-            enabled = imageUri != null
+            modifier = Modifier.fillMaxWidth(),
+            enabled = !isUploading
         ) {
-            Text("Check Price")
+            Text("Submit")
         }
-    }
-}
 
-// Function to Convert Image to Base64
-fun encodeImageToBase64(bitmap: Bitmap): String {
-    val outputStream = ByteArrayOutputStream()
-    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-    return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
-}
+        if (isUploading) {
+            CircularProgressIndicator()
+        }
 
-// Function to Analyze Image using Hugging Face API
-suspend fun analyzeImage(uri: Uri, context: Context): Pair<String, String> {
-    val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
-    val imageBase64 = encodeImageToBase64(bitmap)
-    return callHuggingFaceModel(imageBase64)
-}
-
-// Function to Call Hugging Face API
-suspend fun callHuggingFaceModel(imageBase64: String): Pair<String, String> {
-    val apiKey = "your_huggingface_api_key" // Replace with your actual API key
-    val modelUrl = "https://api-inference.huggingface.co/models/paragon-AI/blip2-image-to-text"
-
-    val httpClient = HttpClient(CIO)
-
-    val response: HttpResponse = httpClient.post(modelUrl) {
-        header("Authorization", "Bearer $apiKey")
-        contentType(ContentType.Application.Json)
-        setBody("""{"image": "$imageBase64"}""")
-    }
-
-    val jsonResponse = response.bodyAsText()
-    val description = extractDescriptionFromResponse(jsonResponse)
-
-    val estimatedPrice = estimatePrice(description)
-    return Pair(description, estimatedPrice)
-}
-
-// Function to Extract Description from API Response
-fun extractDescriptionFromResponse(response: String): String {
-    val jsonObject = JSONObject(response)
-    return jsonObject.getJSONArray("generated_text").getString(0)
-}
-
-// Dummy Price Estimation (Replace with actual pricing logic if needed)
-fun estimatePrice(description: String): String {
-    return when {
-        description.contains("phone", ignoreCase = true) -> "₹10,000"
-        description.contains("laptop", ignoreCase = true) -> "₹25,000"
-        else -> "₹5,000"
+        Text(text = status)
     }
 }
