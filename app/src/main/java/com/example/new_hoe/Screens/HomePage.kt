@@ -1,5 +1,3 @@
-package com.example.new_hoe.Screens
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -16,6 +15,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,9 +25,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.new_hoe.Supabase.ItemData
+import com.example.new_hoe.R
 import fetchItems
 
 @Composable
@@ -50,7 +52,7 @@ fun HomePage() {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Available Items", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(bottom = 16.dp))
+        Text(text = "Hostel Online Exchange", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(bottom = 16.dp))
 
         if (isLoading) {
             CircularProgressIndicator()  // Show loading spinner while fetching data
@@ -83,12 +85,12 @@ fun ItemCard(item: ItemData) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Display Image
-            if (!item.image_uri.isNullOrEmpty()) {
+            if (item.image_uri.isNotEmpty()) {
                 Image(
                     painter = rememberAsyncImagePainter(item.image_uri),
                     contentDescription = "Item Image",
                     modifier = Modifier
-                        .size(120.dp)
+                        .size(300.dp)
                         .padding(bottom = 8.dp)
                 )
             } else {
@@ -103,9 +105,23 @@ fun ItemCard(item: ItemData) {
             Spacer(modifier = Modifier.height(8.dp))
 
             // Display Cost
-            Text(text = "Cost: \$${item.cost ?: "N/A"}", style = MaterialTheme.typography.bodyMedium)
+            Text(text = "Cost: ₹${item.cost ?: "N/A"}", style = MaterialTheme.typography.bodyMedium)
 
-            // You can add more details here if needed
+            // Row for WhatsApp Icon
+            Row(
+                horizontalArrangement = Arrangement.End, // Position the icon to the right
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                IconButton(onClick = {
+                    // Add your WhatsApp share logic here
+                }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.chat), // Use the WhatsApp image from drawable
+                        contentDescription = "WhatsApp",
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+            }
         }
     }
 }

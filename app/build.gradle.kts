@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.datastore.core.android)
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.generativeai)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -73,34 +74,27 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
 
-    // ViewModel
+// Jetpack Compose & Lifecycle
+    implementation("androidx.activity:activity-compose:1.8.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
 
-
-    implementation("io.github.jan-tennert.supabase:gotrue-kt:1.4.0") // Gotrue SDK
-    implementation("io.github.jan-tennert.supabase:storage-kt:1.4.0")  // Storage SDK
-    implementation("io.github.jan-tennert.supabase:postgrest-kt:1.4.0") // Postgrest SDK
-    implementation("androidx.activity:activity-compose:1.8.1") // For image picking
-
-    implementation("io.coil-kt:coil-compose:2.4.0") // For image loading
-
-    implementation("io.ktor:ktor-client-okhttp:2.3.4")
+// Supabase (choose 1.4.0 family)
+    implementation("io.github.jan-tennert.supabase:gotrue-kt:1.4.0")
+    implementation("io.github.jan-tennert.supabase:storage-kt:1.4.0")
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:1.4.0")
 
 
-    // Add this line for Kotlin serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+// Coil for image loading
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
-    //implementation ("io.github.jan.supabase:supabase-kotlin:0.0.1") // Make sure to use the correct version
-    implementation("io.github.jan.supabase:supabase-kotlin:0.0.1")
-
-
+// Ktor Client (Use one engine — OkHttp is fine)
     implementation("io.ktor:ktor-client-core:2.3.4")
-    implementation("io.ktor:ktor-client-cio:2.3.4")
-    implementation("io.ktor:ktor-client-serialization:2.3.4")
-    implementation("io.ktor:ktor-client-json:2.3.4")
+    implementation("io.ktor:ktor-client-okhttp:2.3.4")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.4")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.4")
 
-    implementation("io.github.jan-tennyson:supabase-kt-postgrest:0.16.0")
-    implementation ("io.github.jan.supabase:postgrest-kt:0.9.3") // Use the latest version
+// Kotlinx Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
 }

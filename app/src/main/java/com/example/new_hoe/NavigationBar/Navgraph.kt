@@ -1,6 +1,7 @@
 package com.example.new_hoe.NavigationBar
 
 
+import HomePage
 import RegistrationPage
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -8,7 +9,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.new_hoe.Routes.Routes
 import com.example.new_hoe.Screens.AddPage
-import com.example.new_hoe.Screens.HomePage
 import com.example.new_hoe.Screens.LoginPage
 import com.example.new_hoe.Screens.ProfilePage
 import com.example.new_hoe.Screens.SearchPage

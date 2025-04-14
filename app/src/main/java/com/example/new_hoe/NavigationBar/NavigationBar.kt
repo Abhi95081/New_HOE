@@ -1,5 +1,6 @@
 package com.example.new_hoe.NavigationBar
 
+import HomePage
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
@@ -21,7 +22,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.new_hoe.NavigationBar.BottomNavItem
 import com.example.new_hoe.Routes.Routes
 import com.example.new_hoe.Screens.AddPage
-import com.example.new_hoe.Screens.HomePage
 import com.example.new_hoe.Screens.ProfilePage
 import com.example.new_hoe.Screens.SearchPage
 
