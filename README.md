@@ -65,18 +65,19 @@ uploader | Text | UID or contact
 
 📷 Screenshots
 
-**Login Page**
+**Splash Screen**
 ![image](https://github.com/user-attachments/assets/8fbf5dde-b77b-4153-aeec-30ff7697846d)
-**Registration Page**
+**Login Page**
 ![image](https://github.com/user-attachments/assets/2be7510b-fe56-4995-a4ca-83111ee32b27)
-**Home Page**
+**Registration Page**
 ![image](https://github.com/user-attachments/assets/0d5c5c79-3c58-41bf-8052-dece455c56c8)
-**Search page**
+**Home Page**
 ![image](https://github.com/user-attachments/assets/d688d198-9c8f-4eb2-ba68-9df3e241eea0)
-**Add Items**
+**Search page**
 ![image](https://github.com/user-attachments/assets/691734ad-e32d-4c37-9a82-ca82c6b65fd6)
-**Profile Page**
+**Add Items**
 ![image](https://github.com/user-attachments/assets/1cac0063-bd70-49be-b586-800364219e8b)
+**Profile Page**
 ![image](https://github.com/user-attachments/assets/67c92c94-762e-4e4f-bf9d-cba1b9726cbc)
 
 👤 Author
