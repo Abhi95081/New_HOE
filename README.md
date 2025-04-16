@@ -82,7 +82,7 @@ uploader | Text | UID or contact
 
 👤 Author
 Developed by Abhishek Roushan
-🔗 GitHub | 💼 LinkedIn
+🔗 GitHub(https://github.com/Abhi95081/) | 💼 LinkedIn(https://www.linkedin.com/in/abhishek-roushan/)
 
 🙌 Contributions
 Feel free to fork the repo, raise issues, or submit pull requests to improve functionality or UI/UX.
