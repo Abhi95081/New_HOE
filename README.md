@@ -1,4 +1,4 @@
-# Hostel Online Exchange (HOE) 🏠📦
+# Hostel Online Exchange (HOE) 🏠
 
 An Android app built with Jetpack Compose that helps hostel residents donate, sell, or exchange used items with ease. Whether it's books, electronics, or daily essentials — HOE connects students within the campus for a smarter and more sustainable sharing experience.
 
